@@ -40,7 +40,7 @@ public class RequestParamArgumentResolver implements HandlerArgumentResolver {
             throw new MethodArgumentTypeMismatchException(error);
         }
 
-        if (isString(parameter) && params.get(annotation.value()).size() > 0) {
+        if (isString(parameter) && params.get(annotation.value()).size() > 1) {
            throw new MethodArgumentTypeMismatchException("List cannot be cast to String");
         }
 
