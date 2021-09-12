@@ -2,7 +2,7 @@ package com.github.eybv.jhttp.decoder;
 
 public abstract class DecoderFactory {
 
-    private static DecoderFactory factory;
+    private static volatile DecoderFactory factory;
 
     public static DecoderFactory getDefault() {
         if (factory == null) {

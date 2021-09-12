@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class ArgumentResolverAutoConfigurer {
 
-    private final static Logger logger = Logger.getLogger(RequestMappingAutoConfigurer.class.getName());
+    private final static Logger logger = Logger.getLogger(ArgumentResolverAutoConfigurer.class.getName());
 
     public HandlerArgumentResolver[] scanPackages(String... packages) {
 

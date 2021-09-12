@@ -53,7 +53,7 @@ public class HttpServer {
     public void serveForever() {
         logger.info(String.format("Server started at port %s", serverSocket.getLocalPort()));
         try {
-            while (!stopped || !Thread.currentThread().isInterrupted()) {
+            while (!stopped && !Thread.currentThread().isInterrupted()) {
                 Socket socket = serverSocket.accept();
                 executorService.submit(new ConnectionHandler(socket));
             }
