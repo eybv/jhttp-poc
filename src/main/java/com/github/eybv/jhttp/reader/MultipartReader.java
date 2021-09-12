@@ -3,10 +3,11 @@ package com.github.eybv.jhttp.reader;
 import com.github.eybv.jhttp.HttpRequest;
 import com.github.eybv.jhttp.MultipartBody;
 import com.github.eybv.jhttp.error.BadRequestException;
+import com.github.eybv.jhttp.util.CaseInsensitiveHashMap;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Locale;
+import java.util.Optional;
 
 public final class MultipartReader {
 
@@ -64,20 +65,28 @@ public final class MultipartReader {
             if (line.equals(delimiter)) {
                 partBuilder.flush();
 
-                // Read Content-Disposition header field
-                line = reader.readLine().toLowerCase(Locale.ROOT);
-                if (!line.contains("content-disposition") || !line.contains("name")) {
-                    throw new BadRequestException("Multipart body corrupted");
+                var headers = new CaseInsensitiveHashMap<String>();
+
+                // Read header section
+                while (!(line = reader.readLine()).isEmpty()) {
+                    var kv = line.replaceAll("\\s", "").split(":");
+                    headers.put(kv[0], kv[1]);
                 }
 
-                final var disposition = line.replaceAll("\\s", "").replaceAll("\"", "").split(";");
-                partBuilder.filename = disposition.length > 2 ? disposition[2].split("=")[1] : null;
-                partBuilder.name = disposition[1].split("=")[1];
+                Optional.ofNullable(headers.get("content-disposition"))
+                        .filter(header -> header.contains("name"))
+                        .map(header -> header.replaceAll("\"", "").split(";"))
+                        .ifPresentOrElse(disposition -> {
+                            partBuilder.name = disposition[1].split("=")[1];
+                            if (disposition.length > 2) {
+                                partBuilder.filename = disposition[2].split("=")[1];
+                            }
+                        }, () -> {
+                            throw new BadRequestException("Multipart body corrupted");
+                        });
 
-                continue;
-            }
-            if (line.toLowerCase().contains("content-type")) {
-                partBuilder.type = line.toLowerCase().replaceAll("\\s", "").split(":")[1].trim();
+                partBuilder.type = Optional.ofNullable(headers.get("content-type")).orElse(null);
+
                 continue;
             }
 

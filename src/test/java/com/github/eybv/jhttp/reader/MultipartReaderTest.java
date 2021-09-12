@@ -20,6 +20,7 @@ public class MultipartReaderTest {
                 --8b828fa5639586802868dae2b4049d00
                 Content-Disposition: form-data; name="field1"
                 Content-Type: text/html
+                Content-Transfer-Encoding: 8bit
                          
                 value1
                 --8b828fa5639586802868dae2b4049d00
