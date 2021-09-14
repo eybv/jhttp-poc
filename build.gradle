@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.github.eybv'
-version '1.0.3'
+version '1.0.4'
 
 sourceCompatibility = '15'
 
