@@ -107,7 +107,7 @@ public class Http11RequestReader implements HttpRequestReader {
      * @throws IOException if an I/O error occurs
      */
     private void readRequestLine(HttpRequest request) throws IOException {
-        String methods = "GET HEAD POST PUT DELETE CONNECT OPTIONS TRACE";
+        List<String> methods = List.of("GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE");
         String[] requestLine = readLine().split("\\s");
         try {
             if (!methods.contains(requestLine[0])) {
