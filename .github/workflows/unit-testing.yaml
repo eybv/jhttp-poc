@@ -1,16 +1,14 @@
-name: Publish to GitHub Packages
+name: Unit Testing
 
-on:
-  release:
-    types:  [ created ]
+on: [push, pull_request]
 
 jobs:
-  build:
+
+  test:
 
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
 
     steps:
       - uses: actions/checkout@v2
@@ -22,12 +20,3 @@ jobs:
 
       - name: Unit Test
         run: gradle test
-
-      - name: Build
-        run: gradle build
-
-      - name: Publish
-        run: gradle publish
-        env:
-          USERNAME: ${{ github.actor }}
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
