@@ -100,8 +100,8 @@ public class HttpServer {
         @Override
         public void run() {
             try {
-                HttpRequest request = reader.read();
-                HttpResponse response = HttpResponse.createDefault();
+                final var request = reader.read();
+                final var response = HttpResponse.createDefault();
 
                 logger.info(String.format("Request from %s: %s %s",
                         socket.getInetAddress().getHostAddress(),
@@ -112,7 +112,7 @@ public class HttpServer {
                 writer.write(response);
 
             } catch (HttpException e) {
-                HttpResponse response = HttpResponse.from(e);
+                final var response = HttpResponse.from(e);
                 writer.write(response);
             } catch (Exception e) {
                 if (socket.isConnected()) {

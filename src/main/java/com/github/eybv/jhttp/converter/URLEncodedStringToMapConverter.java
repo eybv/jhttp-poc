@@ -11,10 +11,10 @@ public class URLEncodedStringToMapConverter implements Converter<String, Map<Str
 
     @Override
     public Map<String, List<String>> convert(String from) {
-        Map<String, List<String>> map = new HashMap<>();
+        final var map = new HashMap<String, List<String>>();
         for (String param : URLDecoder.decode(from, StandardCharsets.UTF_8).split("&")) {
-            String[] kv = param.split("=");
-            var list = map.getOrDefault(kv[0], new ArrayList<>());
+            final var kv = param.split("=");
+            final var list = map.getOrDefault(kv[0], new ArrayList<>());
             list.add(kv[1]);
             map.put(kv[0], list);
         }

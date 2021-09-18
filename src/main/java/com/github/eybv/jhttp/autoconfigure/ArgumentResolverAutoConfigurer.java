@@ -17,14 +17,14 @@ public class ArgumentResolverAutoConfigurer {
 
     public HandlerArgumentResolver[] scanPackages(String... packages) {
 
-        var urls = Arrays.stream(packages)
+        final var urls = Arrays.stream(packages)
                 .map(ClasspathHelper::forPackage)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 
-        var config = new ConfigurationBuilder().addUrls(urls);
+        final var config = new ConfigurationBuilder().addUrls(urls);
 
-        Reflections reflections = new Reflections(config);
+        final var reflections = new Reflections(config);
 
         return reflections.getSubTypesOf(HandlerArgumentResolver.class).stream()
                 .peek(x -> logger.info(String.format("Found argument resolver: %s", x.getName())))

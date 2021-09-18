@@ -24,14 +24,14 @@ public class RequestBodyArgumentResolver implements HandlerArgumentResolver {
             throw new UnsupportedParameterException(String.format("%s [%s]", info));
         }
 
-        var annotation = parameter.getAnnotation(RequestBody.class);
+        final var annotation = parameter.getAnnotation(RequestBody.class);
 
         if (request.getData().isEmpty()) {
             if (!annotation.required()) return null;
             throw new MethodArgumentTypeMismatchException("Request body not present");
         }
 
-        var contentType = request.getHeaders()
+        final var contentType = request.getHeaders()
                 .get("Content-Type")
                 .toLowerCase(Locale.ROOT)
                 .replaceAll("\\s*", "")

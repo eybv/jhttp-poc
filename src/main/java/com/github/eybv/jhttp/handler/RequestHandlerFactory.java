@@ -31,8 +31,8 @@ public final class RequestHandlerFactory {
                     throwUnsupportedParameter(parameter);
                 }
             }
-            var result = invokeSneakyThrows(method, instance, invocationArgs);
-            var responseBody = new ObjectToStringConverter().convert(result);
+            final var result = invokeSneakyThrows(method, instance, invocationArgs);
+            final var responseBody = new ObjectToStringConverter().convert(result);
 
             response.setMessageBody(responseBody.getBytes(StandardCharsets.UTF_8));
         };

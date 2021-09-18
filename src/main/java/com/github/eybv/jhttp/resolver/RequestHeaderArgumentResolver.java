@@ -22,8 +22,8 @@ public class RequestHeaderArgumentResolver implements HandlerArgumentResolver {
             throw new UnsupportedParameterException(String.format("%s [%s]", info));
         }
 
-        var annotation = parameter.getAnnotation(RequestHeader.class);
-        var error = String.format("Header %s not present", annotation.value());
+        final var annotation = parameter.getAnnotation(RequestHeader.class);
+        final var error = String.format("Header %s not present", annotation.value());
 
         return Optional.ofNullable(request.getHeaders().get(annotation.value()))
                 .orElseThrow(() -> new MethodArgumentTypeMismatchException(error));

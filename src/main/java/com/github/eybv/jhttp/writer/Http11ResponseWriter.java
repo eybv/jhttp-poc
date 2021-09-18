@@ -17,17 +17,14 @@ public class Http11ResponseWriter implements HttpResponseWriter {
 
     @Override
     public void write(HttpResponse response) {
-        String statusLine = String.format(
-                "HTTP/1.1 %s %s\r\n",
-                response.getStatusCode(),
-                response.getStatusName());
+        final var statusLine = String.format("HTTP/1.1 %s %s\r\n", response.getStatusCode(), response.getStatusName());
 
         if (response.getMessageBody() != null && response.getMessageBody().length > 0) {
             var length = String.valueOf(response.getMessageBody().length);
             response.getHeaders().put("Content-Length", length);
         }
 
-        String headerSection = response.getHeaders()
+        final var headerSection = response.getHeaders()
                 .entrySet()
                 .stream()
                 .map(x -> String.format("%s: %s\r\n", x.getKey(), x.getValue()))
@@ -35,7 +32,7 @@ public class Http11ResponseWriter implements HttpResponseWriter {
                 .orElse("\r\n")
                 .concat("\r\n");
 
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        final var buffer = new ByteArrayOutputStream();
 
         try {
             buffer.write(statusLine.getBytes(StandardCharsets.UTF_8));

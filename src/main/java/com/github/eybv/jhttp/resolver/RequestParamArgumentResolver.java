@@ -22,8 +22,8 @@ public class RequestParamArgumentResolver implements HandlerArgumentResolver {
             throw new UnsupportedParameterException(String.format("%s [%s]", info));
         }
 
-        var annotation = parameter.getAnnotation(RequestParam.class);
-        var query = request.getUri().getRawQuery();
+        final var annotation = parameter.getAnnotation(RequestParam.class);
+        final var query = request.getUri().getRawQuery();
 
         if (query == null) {
             if (!annotation.required()) return null;
@@ -31,8 +31,8 @@ public class RequestParamArgumentResolver implements HandlerArgumentResolver {
             throw new MethodArgumentTypeMismatchException(error);
         }
 
-        var converter = new URLEncodedStringToMapConverter();
-        var params = converter.convert(query);
+        final var converter = new URLEncodedStringToMapConverter();
+        final var params = converter.convert(query);
 
         if (!params.containsKey(annotation.value())) {
             if (!annotation.required()) return null;

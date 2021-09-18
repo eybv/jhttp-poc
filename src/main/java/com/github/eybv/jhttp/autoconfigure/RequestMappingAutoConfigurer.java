@@ -28,18 +28,18 @@ public class RequestMappingAutoConfigurer {
 
     public Map<String, Map<String, RequestHandler>> scanPackages(String... packages) {
 
-        var urls = Arrays.stream(packages)
+        final var urls = Arrays.stream(packages)
                 .map(ClasspathHelper::forPackage)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 
-        var config = new ConfigurationBuilder()
+        final var config = new ConfigurationBuilder()
                 .addScanners(new MethodAnnotationsScanner())
                 .addUrls(urls);
 
-        Reflections reflections = new Reflections(config);
+        final var reflections = new Reflections(config);
 
-        Set<Method> delegates = reflections.getMethodsAnnotatedWith(RequestMapping.class);
+        final var delegates = reflections.getMethodsAnnotatedWith(RequestMapping.class);
 
         final var bindings = new HashMap<String, Map<String, RequestHandler>>();
 
@@ -56,7 +56,7 @@ public class RequestMappingAutoConfigurer {
                 throw new DuplicateBindingsException(String.format("Handler %s %s already exists", handler));
             }
 
-            final RequestHandler handler = RequestHandlerFactory.fromMethod(delegate, resolvers);
+            final var handler = RequestHandlerFactory.fromMethod(delegate, resolvers);
 
             final var paths = bindings.getOrDefault(annotation.method(), new HashMap<>());
             paths.put(annotation.path(), handler);
